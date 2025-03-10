@@ -14,7 +14,7 @@ Bu sistem universitet daxilində aşağıdakı əsas funksiyaları yerinə yetir
 - **Spring Data JPA** – ORM və verilənlər bazası ilə iş üçün
 - **Lombok** – Kodun daha səliqəli və qısa olması üçün
 - **Gradle** – Layihə idarəetmə və asılılıqların idarə olunması üçün
-- **H2/PostgreSQL** – Verilənlər bazası
+- **MySQL** – Verilənlər bazası
 - **Spring Security** – İstifadəçi identifikasiyası və təhlükəsizlik üçün
 
 ## Quraşdırma və İşə Salma
@@ -77,12 +77,4 @@ Sistem **Spring Security** istifadə edərək autentifikasiya və avtorizasiyan�
 - **Müəllim** – Tələbələri və kursları idarə edə bilər
 - **Tələbə** – Öz dərslərini və qeydiyyatlarını görə bilər
 
-## Əlavə Funksiyalar
-- **Məlumat bazasına H2 konsolundan giriş:**
-  `http://localhost:8080/h2-console`
-- **Swagger API sənədləşməsi:**
-  `http://localhost:8080/swagger-ui.html`
-
-## Lisenziya
-Bu layihə MIT lisenziyası altında təqdim edilir.
 
