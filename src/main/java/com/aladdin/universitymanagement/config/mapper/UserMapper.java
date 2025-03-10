@@ -1,7 +1,6 @@
 package com.aladdin.universitymanagement.config.mapper;
 
 import com.aladdin.universitymanagement.dao.entitys.User;
-import com.aladdin.universitymanagement.model.dto.user.RequestUserDto;
 import com.aladdin.universitymanagement.model.dto.user.ResponseUserDto;
 import org.springframework.stereotype.Component;
 
