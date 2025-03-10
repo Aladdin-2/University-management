@@ -9,7 +9,7 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 
 @RestController
-@RequestMapping(path = "com.aladdin/university-site/")
+@RequestMapping(path = "com.aladdin/university-site/university")
 @RequiredArgsConstructor
 public class UniversityController {
 

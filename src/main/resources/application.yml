@@ -13,6 +13,14 @@ spring:
       hibernate:
         format_sql: true
     database-platform: org.hibernate.dialect.MySQLDialect
+  kafka:
+    consumer:
+      group-id: my-group
+      auto-offset-reset: earliest
+    producer:
+      bootstrap-servers: localhost:9092
+    listener:
+      missing-topics-fatal: false
   logging:
     level:
       org:
@@ -43,3 +51,5 @@ spring:
     fromEmail: ${FROM_EMAIL}
 
   ALGORITHM: ${ALGORITHM}
+
+

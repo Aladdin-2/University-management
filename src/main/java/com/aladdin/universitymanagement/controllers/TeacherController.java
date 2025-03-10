@@ -53,23 +53,4 @@ public class TeacherController {
     void deleteStudents() {
         teacherServiceImpl.deleteTeachers();
     }
-
-//
-//    @GetMapping(path = "get/{teacherId}")
-//    public Teacher getTeacher(@PathVariable(name = "teacherId") Long teacherId) {
-//        return teacherServiceImpl.getTeacher(teacherId);
-//    }
-//
-//    @GetMapping(path = "get-all")
-//    public List<Teacher> getTeachers() {
-//        return teacherServiceImpl.getTeachers();
-//    }
-//
-//
-//    @PostMapping(path = "enrol/{enrollmentId}/uni/{uniId}")
-//    public Teacher newUniversity(@PathVariable(name = "enrollmentId") Long enrollment,
-//                                 @PathVariable(name = "uniId") Long universityId,
-//                                 @RequestBody Teacher teacher) {
-//        return teacherServiceImpl.newTeacherToEnrollment(enrollment, universityId, teacher);
-//    }
 }

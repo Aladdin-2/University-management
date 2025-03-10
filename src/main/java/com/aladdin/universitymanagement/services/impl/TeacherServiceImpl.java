@@ -89,23 +89,4 @@ public class TeacherServiceImpl implements TeacherService {
         teacherRepository.resetAutoIncrement();
     }
 
-
-//        return teacher;
-//    public Teacher newTeacherToEnrollment(Long enrollmentId, Long universityId, Teacher teacher) {
-//        University university = universityRepository.findById(universityId)
-//                .orElseThrow(() -> new RuntimeException("University not found!"));
-//        teacher = teacherRepository.save(teacher);
-//        Optional<Enrollment> optionalEnrollment = enrollmentRepository.findById(enrollmentId);
-//        Enrollment enrollment;
-//        if (optionalEnrollment.isEmpty()) {
-//            enrollment = new Enrollment();
-//        } else {
-//            enrollment = optionalEnrollment.get();
-//
-//        }
-//        enrollment.setTeacher(teacher);
-//        university.getEnrollments().add(enrollment);
-//        enrollmentRepository.save(enrollment);
-//        universityRepository.save(university);
-//    }
 }

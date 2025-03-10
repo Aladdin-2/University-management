@@ -30,14 +30,6 @@ public class University {
     @JsonManagedReference
     private List<Enrollment> enrollments = new ArrayList<>();
 
-//    @OneToMany(mappedBy = "university", cascade = CascadeType.ALL, orphanRemoval = true)
-//    @JsonManagedReference
-//    private List<Student> students = new ArrayList<>();
-//
-//    @OneToMany(mappedBy = "university", cascade = CascadeType.ALL, orphanRemoval = true)
-//    @JsonManagedReference
-//    private List<Teacher> teachers = new ArrayList<>();
-
     @OneToMany(mappedBy = "university", cascade = CascadeType.ALL, orphanRemoval = true)
     @JsonManagedReference
     private List<Employee> employees = new ArrayList<>();
