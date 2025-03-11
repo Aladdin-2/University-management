@@ -27,10 +27,10 @@ public class SecurityConfig {
                 .csrf(AbstractHttpConfigurer::disable)
                 .authorizeHttpRequests(auth -> auth
                         .requestMatchers("com.aladdin/university-site/university/**").hasRole("ADMIN")
-                        .requestMatchers("com.aladdin/university-site/employee/**").hasAnyRole("ADMIN", "USER")
-                        .requestMatchers("com.aladdin/university-site/enrollment/**").hasAnyRole("ADMIN", "USER")
-                        .requestMatchers("com.aladdin/university-site/student/**").hasAnyRole("ADMIN", "USER")
-                        .requestMatchers("com.aladdin/university-site/teacher/**").hasAnyRole("ADMIN", "USER")
+                        .requestMatchers("com.aladdin/university-site/employee/**").hasAnyRole("ADMIN", "EMPLOYEE")
+                        .requestMatchers("com.aladdin/university-site/enrollment/**").hasAnyRole("ADMIN", "STUDENT","TEACHER")
+                        .requestMatchers("com.aladdin/university-site/student/**").hasAnyRole("ADMIN", "STUDENT")
+                        .requestMatchers("com.aladdin/university-site/teacher/**").hasAnyRole("ADMIN", "TEACHER")
                         .anyRequest()
                         .permitAll()
                 )
@@ -41,7 +41,7 @@ public class SecurityConfig {
 
     @Bean
     public AuthenticationManager authenticationManager(
-            UserDetailsService userDetailsService, PasswordEncoder passwordEncoder) throws Exception {
+            UserDetailsService userDetailsService, PasswordEncoder passwordEncoder) {
 
         DaoAuthenticationProvider provider = new DaoAuthenticationProvider();
         provider.setUserDetailsService(userDetailsService);

@@ -10,7 +10,7 @@ import java.util.List;
 public class StudentMapper {
 
     public ResponseStudentDto toDto(Student student) {
-        return new ResponseStudentDto(student.getStudentName(),
+        return new ResponseStudentDto(student.getUsername(),
                 student.getCourse());
     }
 

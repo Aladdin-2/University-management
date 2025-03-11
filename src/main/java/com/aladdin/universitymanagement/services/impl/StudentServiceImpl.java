@@ -1,12 +1,14 @@
 package com.aladdin.universitymanagement.services.impl;
 
 import com.aladdin.universitymanagement.config.mapper.StudentMapper;
+import com.aladdin.universitymanagement.dao.entitys.Role;
 import com.aladdin.universitymanagement.dao.entitys.Student;
 import com.aladdin.universitymanagement.dao.repositorys.StudentRepository;
 import com.aladdin.universitymanagement.model.dto.student.ResponseStudentDto;
 import com.aladdin.universitymanagement.services.StudentService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
@@ -20,9 +22,13 @@ public class StudentServiceImpl implements StudentService {
 
     private final StudentRepository studentRepository;
     private final StudentMapper studentMapper;
+    private final PasswordEncoder passwordEncoder;
 
     @Override
     public ResponseStudentDto newStudent(Student student) {
+        student.getRoles().add(Role.builder()
+                .name("STUDENT").build());
+        student.setPassword(passwordEncoder.encode(student.getPassword()));
         studentRepository.save(student);
         return studentMapper.toDto(student);
     }
@@ -30,8 +36,9 @@ public class StudentServiceImpl implements StudentService {
     @Override
     public ResponseStudentDto updateStudent(Student student) {
         Student student1 = studentRepository.findById(student.getId()).orElse(student);
-        student1.setStudentName(student.getStudentName());
+        student1.setUsername(student.getUsername());
         student1.setCourse(student.getCourse());
+        student.setPassword(passwordEncoder.encode(student.getPassword()));
         studentRepository.save(student1);
         return studentMapper.toDto(student1);
     }
@@ -45,7 +52,7 @@ public class StudentServiceImpl implements StudentService {
                     .orElseThrow(() -> new RuntimeException("Student not found!")));
         }
         if (name != null) {
-            students.addAll(studentRepository.findByStudentName(name));
+            students.addAll(studentRepository.findByUsername(name));
         }
         if (course != null) {
             students.addAll(studentRepository.findByCourse(course));
@@ -57,10 +64,10 @@ public class StudentServiceImpl implements StudentService {
     }
 
     @Override
-    public List<ResponseStudentDto> sortedStudent( String sortType,String name) {
+    public List<ResponseStudentDto> sortedStudent(String sortType, String name) {
         List<Student> students = new ArrayList<>();
         if (name != null) {
-            students.addAll(studentRepository.findByStudentName(name));
+            students.addAll(studentRepository.findByUsername(name));
         } else {
             students.addAll(studentRepository.findAll());
         }
@@ -70,7 +77,7 @@ public class StudentServiceImpl implements StudentService {
         if (sortType != null) {
             switch (sortType.toLowerCase()) {
                 case "course" -> students.sort(Comparator.comparingInt(Student::getCourse));
-                case "name" -> students.sort(Comparator.comparing(Student::getStudentName));
+                case "name" -> students.sort(Comparator.comparing(Student::getUsername));
             }
         }
         return studentMapper.toDto(students);

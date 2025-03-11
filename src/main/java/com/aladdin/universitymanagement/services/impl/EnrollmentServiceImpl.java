@@ -45,7 +45,7 @@ public class EnrollmentServiceImpl implements EnrollmentService {
         newEnrollment(teacher, student);
         List<Student> studentsByTeacherId = enrollmentRepository.findStudentsByTeacherId(teacherId);
         return new TeacherWithStudentsDto(
-                teacher.getTeacherName(),
+                teacher.getUsername(),
                 studentMapper.toDto(studentsByTeacherId)
         );
     }
@@ -65,7 +65,7 @@ public class EnrollmentServiceImpl implements EnrollmentService {
         newEnrollment(teacher, student);
         List<Teacher> teachersByStudentId = enrollmentRepository.findTeachersByStudentId(studentId);
         return new StudentWithTeachersDto(
-                student.getStudentName(),
+                student.getUsername(),
                 teacherMapper.toDto(teachersByStudentId)
         );
     }
@@ -77,7 +77,7 @@ public class EnrollmentServiceImpl implements EnrollmentService {
                 .orElseThrow(() -> new ResourceNotFoundException("Student not found"));
         List<Teacher> teachersByStudentId = enrollmentRepository.findTeachersByStudentId(studentId);
         StudentWithTeachersDto responseStudent = new StudentWithTeachersDto();
-        responseStudent.setStudentName(student.getStudentName());
+        responseStudent.setStudentName(student.getUsername());
         responseStudent.setTeachers(teachersByStudentId.isEmpty() ? Collections.emptyList() : teacherMapper.toDto(teachersByStudentId));
         return responseStudent;
     }
@@ -89,7 +89,7 @@ public class EnrollmentServiceImpl implements EnrollmentService {
                 .orElseThrow(() -> new ResourceNotFoundException("Teacher not found!"));
         List<Student> studentsByTeacherId = enrollmentRepository.findStudentsByTeacherId(teacherId);
         TeacherWithStudentsDto responseTeacher = new TeacherWithStudentsDto();
-        responseTeacher.setTeacherName(teacher.getTeacherName());
+        responseTeacher.setTeacherName(teacher.getUsername());
         responseTeacher.setStudents(studentsByTeacherId.isEmpty() ? Collections.emptyList() : studentMapper.toDto(studentsByTeacherId));
         return responseTeacher;
     }
@@ -103,7 +103,7 @@ public class EnrollmentServiceImpl implements EnrollmentService {
         }
         return students.stream().map(student -> {
             List<ResponseTeacherDto> teacherDto = teacherMapper.toDto(student.getTeachers());
-            return new StudentWithTeachersDto(student.getStudentName(),
+            return new StudentWithTeachersDto(student.getUsername(),
                     teacherDto);
         }).toList();
     }

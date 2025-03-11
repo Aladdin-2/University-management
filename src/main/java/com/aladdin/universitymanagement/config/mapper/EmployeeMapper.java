@@ -11,7 +11,8 @@ public class EmployeeMapper {
 
     public ResponseEmployeeDto toDto(Employee employee) {
         return new ResponseEmployeeDto(
-                employee.getEmployeeName()
+                employee.getUsername(),
+                employee.getJob()
         );
     }
 

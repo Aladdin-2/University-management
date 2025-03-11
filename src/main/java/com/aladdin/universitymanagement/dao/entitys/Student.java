@@ -16,15 +16,13 @@ import java.util.List;
 @Entity
 @Data
 @Table(name = "students")
-public class Student {
+@Inheritance(strategy = InheritanceType.JOINED)
+public class Student extends User {
 
     @Id
     @Column(name = "student_id")
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
-
-    @Column(name = "name")
-    private String studentName;
 
     @Column(name = "course")
     private Integer course;

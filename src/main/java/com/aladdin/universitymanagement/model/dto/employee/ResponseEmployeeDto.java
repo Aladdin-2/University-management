@@ -11,4 +11,5 @@ import lombok.NoArgsConstructor;
 @Data
 public class ResponseEmployeeDto {
     private String employeeName;
+    private String job;
 }

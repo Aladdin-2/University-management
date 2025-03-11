@@ -18,15 +18,14 @@ import java.util.List;
 @Entity
 @Data
 @Table(name = "teachers")
-public class Teacher {
+@Inheritance(strategy = InheritanceType.JOINED)
+public class Teacher extends User{
 
     @Id
     @Column(name = "teacher_id")
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @Column(name = "name")
-    private String teacherName;
 
     @Enumerated(EnumType.STRING)
     private Specialty speciality;

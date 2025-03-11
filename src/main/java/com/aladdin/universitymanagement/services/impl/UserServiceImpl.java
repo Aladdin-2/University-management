@@ -1,13 +1,13 @@
 package com.aladdin.universitymanagement.services.impl;
 
 import com.aladdin.universitymanagement.config.mapper.UserMapper;
-import com.aladdin.universitymanagement.dao.entitys.Role;
 import com.aladdin.universitymanagement.dao.entitys.User;
 import com.aladdin.universitymanagement.dao.repositorys.RoleRepository;
 import com.aladdin.universitymanagement.dao.repositorys.UserRepository;
 import com.aladdin.universitymanagement.exception.ResourceNotFoundException;
 import com.aladdin.universitymanagement.model.dto.user.ResponseUserDto;
 import com.aladdin.universitymanagement.services.UserService;
+import jakarta.servlet.http.HttpServletRequest;
 import jakarta.validation.constraints.NotNull;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -26,12 +26,12 @@ public class UserServiceImpl implements UserService {
     private final UserMapper userMapper;
     private final RoleRepository roleRepository;
     private final UserRepository userRepository;
+    private final HttpServletRequest request;
 
 
     @Override
     public ResponseUserDto addUser(@NotNull User user) {
         user.setPassword(passwordEncoder.encode(user.getPassword()));
-        setRol(user);
         userRepository.save(user);
         return userMapper.toDto(user);
     }
@@ -42,7 +42,6 @@ public class UserServiceImpl implements UserService {
                 .orElse(new User());
         newUser.setUsername(user.getUsername());
         newUser.setPassword(user.getPassword());
-        setRol(user);
         userRepository.save(newUser);
         return userMapper.toDto(newUser);
     }
@@ -55,8 +54,7 @@ public class UserServiceImpl implements UserService {
         }
         if (sortType != null) {
             switch (sortType) {
-                case "ascending" ->
-                        users = users.stream().sorted(Comparator.comparing(User::getUsername)).toList();
+                case "ascending" -> users = users.stream().sorted(Comparator.comparing(User::getUsername)).toList();
                 case "descending" ->
                         users = users.stream().sorted(Comparator.comparing(User::getUsername).reversed()).toList();
             }
@@ -102,24 +100,5 @@ public class UserServiceImpl implements UserService {
         userRepository.resetAutoIncrement();
     }
 
-    private void setRol(User user) {
-        user.getRoles().add(
-                roleRepository.findByName("USER")
-                        .orElseGet(() ->
-                                roleRepository.save(Role.builder()
-                                        .name("USER")
-                                        .build()))
-        );
-
-        if (user.getUsername().equals("admin")) {
-            user.getRoles().add(
-                    roleRepository.findByName("ADMIN")
-                            .orElseGet(() ->
-                                    roleRepository.save(Role.builder()
-                                            .name("ADMIN")
-                                            .build()))
-            );
-        }
-    }
 
 }

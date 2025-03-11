@@ -12,7 +12,7 @@ import java.util.List;
 public interface TeacherRepository extends JpaRepository<Teacher, Long> {
 
 
-    List<Teacher> findByTeacherName(String name);
+    List<Teacher> findByUsername(String name);
 
     List<Teacher> findBySpeciality(Specialty specialty);
 

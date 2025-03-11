@@ -13,18 +13,21 @@ import lombok.NoArgsConstructor;
 @Entity
 @Data
 @Table(name = "employees")
-public class Employee {
+@Inheritance(strategy = InheritanceType.JOINED)
+public class Employee extends User{
 
     @Id
     @Column(name = "employee_id")
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @Column(name = "name")
-    private String employeeName;
+    @Column(name = "job")
+    private String job;
 
     @ManyToOne
     @JsonBackReference
     @JoinColumn(name = "university_id")
     private University university;
+    
+
 }

@@ -20,4 +20,6 @@ public interface UserService {
     void deleteUserById(Long userId);
 
     void deleteAllUsers();
+
+
 }

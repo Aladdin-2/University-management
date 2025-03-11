@@ -11,7 +11,7 @@ public class TeacherMapper {
 
     public ResponseTeacherDto toDto(Teacher teacher) {
         return new ResponseTeacherDto(
-                teacher.getTeacherName(),
+                teacher.getUsername(),
                 teacher.getSpeciality());
     }
 

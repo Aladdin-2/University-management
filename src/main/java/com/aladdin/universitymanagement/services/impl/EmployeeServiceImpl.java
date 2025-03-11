@@ -2,11 +2,14 @@ package com.aladdin.universitymanagement.services.impl;
 
 import com.aladdin.universitymanagement.config.mapper.EmployeeMapper;
 import com.aladdin.universitymanagement.dao.entitys.Employee;
+import com.aladdin.universitymanagement.dao.entitys.Role;
 import com.aladdin.universitymanagement.dao.repositorys.EmployeeRepository;
+import com.aladdin.universitymanagement.dao.repositorys.RoleRepository;
 import com.aladdin.universitymanagement.exception.ResourceNotFoundException;
 import com.aladdin.universitymanagement.model.dto.employee.ResponseEmployeeDto;
 import com.aladdin.universitymanagement.services.EmployeeService;
 import lombok.RequiredArgsConstructor;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
@@ -18,9 +21,15 @@ public class EmployeeServiceImpl implements EmployeeService {
 
     private final EmployeeRepository employeeRepository;
     private final EmployeeMapper employeeMapper;
+    private final PasswordEncoder passwordEncoder;
+    private final RoleRepository roleRepository;
 
     @Override
     public ResponseEmployeeDto newEmployee(Employee employee) {
+        employee.setPassword(passwordEncoder.encode(employee.getPassword()));
+        employee.getRoles().add(Role.builder()
+                .name("EMPLOYEE").build());
+        roleRepository.saveAll(employee.getRoles());
         employeeRepository.save(employee);
         return employeeMapper.toDto(employee);
     }
@@ -30,7 +39,8 @@ public class EmployeeServiceImpl implements EmployeeService {
         Employee employee1 = employeeRepository
                 .findById(employee.getId())
                 .orElseThrow(() -> new ResourceNotFoundException("Employee not found!"));
-        employee1.setEmployeeName(employee.getEmployeeName());
+        employee1.setUsername(employee.getUsername());
+        employee.setPassword(passwordEncoder.encode(employee.getPassword()));
         employeeRepository.save(employee1);
         return employeeMapper.toDto(employee);
     }
@@ -44,7 +54,7 @@ public class EmployeeServiceImpl implements EmployeeService {
                     .orElseThrow(() -> new ResourceNotFoundException("Employee not found!")));
         }
         if (name != null) {
-            employees.addAll(employeeRepository.findByEmployeeName(name));
+            employees.addAll(employeeRepository.findByUsername(name));
         }
         if (employees.isEmpty()) {
             throw new ResourceNotFoundException("Not found with these parameters!");
