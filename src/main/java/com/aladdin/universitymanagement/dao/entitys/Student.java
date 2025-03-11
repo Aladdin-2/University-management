@@ -31,4 +31,5 @@ public class Student extends User {
     @OneToMany(mappedBy = "student", cascade = CascadeType.ALL, orphanRemoval = true)
     @JsonBackReference
     private List<Enrollment> enrollments = new ArrayList<>();
+}
 
