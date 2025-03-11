@@ -24,9 +24,7 @@ public class UserServiceImpl implements UserService {
 
     private final PasswordEncoder passwordEncoder;
     private final UserMapper userMapper;
-    private final RoleRepository roleRepository;
     private final UserRepository userRepository;
-    private final HttpServletRequest request;
 
 
     @Override
