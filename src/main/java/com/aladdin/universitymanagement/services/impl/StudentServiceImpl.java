@@ -4,8 +4,10 @@ import com.aladdin.universitymanagement.config.mapper.StudentMapper;
 import com.aladdin.universitymanagement.dao.entitys.Role;
 import com.aladdin.universitymanagement.dao.entitys.Student;
 import com.aladdin.universitymanagement.dao.repositorys.StudentRepository;
+import com.aladdin.universitymanagement.email.ConfirmationEmailServiceImpl;
 import com.aladdin.universitymanagement.model.dto.student.ResponseStudentDto;
 import com.aladdin.universitymanagement.services.StudentService;
+import com.aladdin.universitymanagement.util.JwtUtil;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -23,13 +25,17 @@ public class StudentServiceImpl implements StudentService {
     private final StudentRepository studentRepository;
     private final StudentMapper studentMapper;
     private final PasswordEncoder passwordEncoder;
+    private final ConfirmationEmailServiceImpl emailService;
+    private final JwtUtil jwtUtil;
 
     @Override
     public ResponseStudentDto newStudent(Student student) {
         student.getRoles().add(Role.builder()
                 .name("STUDENT").build());
         student.setPassword(passwordEncoder.encode(student.getPassword()));
+        String activationToken  = jwtUtil.generateActivationToken(student.getEmail());
         studentRepository.save(student);
+        emailService.sendEmail(student.getEmail(), "Thank you for registering",activationToken );
         return studentMapper.toDto(student);
     }
 

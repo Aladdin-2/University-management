@@ -15,12 +15,6 @@ public class EmployeeController {
 
     private final EmployeeServiceImpl employeeServiceImpl;
 
-
-//    @PostMapping(path = "/new")
-//    public ResponseEmployeeDto newEmployee(@RequestBody Employee employee) {
-//        return employeeServiceImpl.newEmployee(employee);
-//    }
-
     @PutMapping(path = "/put")
     public ResponseEmployeeDto updateEmployee(@RequestBody Employee employee) {
         return employeeServiceImpl.updateEmployee(employee);

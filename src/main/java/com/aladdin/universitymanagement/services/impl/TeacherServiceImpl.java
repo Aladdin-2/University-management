@@ -4,9 +4,11 @@ import com.aladdin.universitymanagement.config.mapper.TeacherMapper;
 import com.aladdin.universitymanagement.dao.entitys.Role;
 import com.aladdin.universitymanagement.dao.entitys.Teacher;
 import com.aladdin.universitymanagement.dao.repositorys.TeacherRepository;
+import com.aladdin.universitymanagement.email.ConfirmationEmailServiceImpl;
 import com.aladdin.universitymanagement.model.dto.teacher.ResponseTeacherDto;
 import com.aladdin.universitymanagement.model.enums.Specialty;
 import com.aladdin.universitymanagement.services.TeacherService;
+import com.aladdin.universitymanagement.util.JwtUtil;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
@@ -22,13 +24,18 @@ public class TeacherServiceImpl implements TeacherService {
     private final TeacherRepository teacherRepository;
     private final TeacherMapper teacherMapper;
     private final PasswordEncoder passwordEncoder;
+    private final ConfirmationEmailServiceImpl emailService;
+    private final JwtUtil jwtUtil;
+
 
     @Override
     public ResponseTeacherDto newTeacher(Teacher teacher) {
         teacher.getRoles().add(Role.builder()
                 .name("TEACHER").build());
         teacher.setPassword(passwordEncoder.encode(teacher.getPassword()));
+        String activationToken = jwtUtil.generateActivationToken(teacher.getEmail());
         teacherRepository.save(teacher);
+        emailService.sendEmail(teacher.getEmail(), "Thank you for registering", activationToken);
         return teacherMapper.toDto(teacher);
     }
 

@@ -20,9 +20,12 @@ public class User {
 
     private String username;
     private String password;
-    private boolean enabled;
 
-    @ManyToMany(fetch = FetchType.EAGER,cascade = CascadeType.ALL)
-    private Set<Role> roles =new HashSet<>();
+    @Column(unique = true)
+    private String email;
+    private boolean enabled = false;
+
+    @ManyToMany(fetch = FetchType.EAGER, cascade = CascadeType.ALL)
+    private Set<Role> roles = new HashSet<>();
 
 }

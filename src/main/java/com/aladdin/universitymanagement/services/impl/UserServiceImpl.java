@@ -2,14 +2,13 @@ package com.aladdin.universitymanagement.services.impl;
 
 import com.aladdin.universitymanagement.config.mapper.UserMapper;
 import com.aladdin.universitymanagement.dao.entitys.User;
-import com.aladdin.universitymanagement.dao.repositorys.RoleRepository;
 import com.aladdin.universitymanagement.dao.repositorys.UserRepository;
 import com.aladdin.universitymanagement.exception.ResourceNotFoundException;
 import com.aladdin.universitymanagement.model.dto.user.ResponseUserDto;
 import com.aladdin.universitymanagement.services.UserService;
-import jakarta.servlet.http.HttpServletRequest;
 import jakarta.validation.constraints.NotNull;
 import lombok.RequiredArgsConstructor;
+import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -98,5 +97,10 @@ public class UserServiceImpl implements UserService {
         userRepository.resetAutoIncrement();
     }
 
+    @Scheduled(fixedRate = 3600000)
+    private void deleteUnregistered() {
+        List<User> unregistered = userRepository.findAll().stream().filter(user -> !user.isEnabled()).toList();
+        userRepository.deleteAll(unregistered);
+    }
 
 }

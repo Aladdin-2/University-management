@@ -15,11 +15,6 @@ public class StudentController {
 
     private final StudentService studentService;
 
-    @PostMapping(path = "new")
-    public ResponseStudentDto newStudent(@RequestBody Student student) {
-        return studentService.newStudent(student);
-    }
-
     @PutMapping(path = "put")
     public ResponseStudentDto updateStudent(@RequestBody Student student) {
         return studentService.updateStudent(student);

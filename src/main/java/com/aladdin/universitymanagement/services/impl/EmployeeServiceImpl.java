@@ -5,9 +5,11 @@ import com.aladdin.universitymanagement.dao.entitys.Employee;
 import com.aladdin.universitymanagement.dao.entitys.Role;
 import com.aladdin.universitymanagement.dao.repositorys.EmployeeRepository;
 import com.aladdin.universitymanagement.dao.repositorys.RoleRepository;
+import com.aladdin.universitymanagement.email.ConfirmationEmailServiceImpl;
 import com.aladdin.universitymanagement.exception.ResourceNotFoundException;
 import com.aladdin.universitymanagement.model.dto.employee.ResponseEmployeeDto;
 import com.aladdin.universitymanagement.services.EmployeeService;
+import com.aladdin.universitymanagement.util.JwtUtil;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
@@ -23,14 +25,18 @@ public class EmployeeServiceImpl implements EmployeeService {
     private final EmployeeMapper employeeMapper;
     private final PasswordEncoder passwordEncoder;
     private final RoleRepository roleRepository;
+    private final ConfirmationEmailServiceImpl emailService;
+    private final JwtUtil jwtUtil;
 
     @Override
     public ResponseEmployeeDto newEmployee(Employee employee) {
         employee.setPassword(passwordEncoder.encode(employee.getPassword()));
         employee.getRoles().add(Role.builder()
                 .name("EMPLOYEE").build());
+        String activationToken = jwtUtil.generateActivationToken(employee.getEmail());
         roleRepository.saveAll(employee.getRoles());
         employeeRepository.save(employee);
+        emailService.sendEmail(employee.getEmail(), "Thank you for registering", activationToken);
         return employeeMapper.toDto(employee);
     }
 
@@ -78,4 +84,6 @@ public class EmployeeServiceImpl implements EmployeeService {
         employeeRepository.deleteAll();
         employeeRepository.resetAutoIncrement();
     }
+
+
 }

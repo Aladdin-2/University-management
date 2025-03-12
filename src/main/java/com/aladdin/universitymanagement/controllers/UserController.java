@@ -18,11 +18,6 @@ public class UserController {
     private final RoleRepository roleRepository;
     private final UserServiceImpl userServiceImpl;
 
-    @PostMapping(path = "new")
-    public ResponseUserDto addUser(@RequestBody User user) {
-        return userServiceImpl.addUser(user);
-    }
-
     @PutMapping(path = "update")
     public ResponseUserDto updateUser(@RequestBody User user) {
         return userServiceImpl.updateUser(user);
@@ -58,4 +53,6 @@ public class UserController {
     public Role addRole(@RequestBody Role role) {
         return roleRepository.save(role);
     }
+
+
 }

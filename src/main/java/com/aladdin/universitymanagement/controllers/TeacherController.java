@@ -16,10 +16,6 @@ public class TeacherController {
 
     private final TeacherServiceImpl teacherServiceImpl;
 
-    @PostMapping(path = "new")
-    public ResponseTeacherDto newTeacher(@RequestBody Teacher teacher) {
-        return teacherServiceImpl.newTeacher(teacher);
-    }
 
     @PostMapping(path = "put")
     ResponseTeacherDto updateTeacher(@RequestBody Teacher teacher) {
