@@ -16,6 +16,8 @@ Bu sistem universitet daxilində aşağıdakı əsas funksiyaları yerinə yetir
 - **Gradle** – Layihə idarəetmə və asılılıqların idarə olunması üçün
 - **MySQL** – Verilənlər bazası
 - **Spring Security** – İstifadəçi identifikasiyası və təhlükəsizlik üçün
+- **JWT token** – İstifadəçi girişi yoxlamaq üçün
+
 
 ## Quraşdırma və İşə Salma
 1. Repozitoriyanı klonlayın:
